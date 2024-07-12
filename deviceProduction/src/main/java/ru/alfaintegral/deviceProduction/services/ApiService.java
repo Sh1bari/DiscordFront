@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.application.Platform;
 import lombok.*;
 import org.springframework.stereotype.Service;
+import ru.alfaintegral.deviceProduction.exceptions.AppError;
+import ru.alfaintegral.deviceProduction.exceptions.GeneralException;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -33,7 +35,8 @@ public class ApiService {
                 if (response.statusCode() == 200) {
                     return objectMapper.readValue(response.body(), responseType);
                 } else {
-                    throw new RuntimeException("Failed to fetch data: " + response.statusCode());
+                    AppError err = objectMapper.readValue(response.body(), AppError.class);
+                    throw new GeneralException(err.getStatus(), err.getMessage());
                 }
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
@@ -45,7 +48,7 @@ public class ApiService {
         sendRequest(request, responseType)
                 .thenAccept(response -> Platform.runLater(() -> onSuccess.accept(response)))
                 .exceptionally(e -> {
-                    Platform.runLater(() -> onError.accept((Exception) e));
+                    Platform.runLater(() -> onError.accept((Exception) e.getCause()));
                     return null;
                 });
     }
@@ -65,5 +68,14 @@ public class ApiService {
                 .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                 .build();
         executeRequest(request, responseType, onSuccess, onError);
+    }
+
+    public <T, B> void post(String url, B body, Class<T> responseType, Consumer<T> onSuccess, Consumer<Exception> onError) {
+        try {
+            String jsonBody = objectMapper.writeValueAsString(body);
+            post(url, jsonBody, responseType, onSuccess, onError);
+        } catch (IOException e) {
+            Platform.runLater(() -> onError.accept(e));
+        }
     }
 }

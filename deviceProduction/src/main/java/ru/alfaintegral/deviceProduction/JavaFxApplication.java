@@ -31,9 +31,10 @@ public class JavaFxApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         fxmlLoader.setLocation(getClass().getResource("/hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        Scene scene = new Scene(fxmlLoader.load());
         primaryStage.setTitle("Hello JavaFX and Spring!");
         primaryStage.setScene(scene);
+        primaryStage.sizeToScene();
         primaryStage.show();
     }
 
