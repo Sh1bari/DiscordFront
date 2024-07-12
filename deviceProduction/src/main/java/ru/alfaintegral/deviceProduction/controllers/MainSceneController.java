@@ -1,16 +1,12 @@
 package ru.alfaintegral.deviceProduction.controllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.alfaintegral.deviceProduction.models.UserDto;
-import ru.alfaintegral.deviceProduction.models.api.responses.RegisterUserDtoRes;
 import ru.alfaintegral.deviceProduction.models.api.responses.UserMe.UserDtoReq;
 import ru.alfaintegral.deviceProduction.services.ApiService;
 import ru.alfaintegral.deviceProduction.services.TokenService;

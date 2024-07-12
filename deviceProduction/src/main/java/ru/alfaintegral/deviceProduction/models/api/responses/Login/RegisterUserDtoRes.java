@@ -1,4 +1,4 @@
-package ru.alfaintegral.deviceProduction.models.api.responses;
+package ru.alfaintegral.deviceProduction.models.api.responses.Login;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.AllArgsConstructor;

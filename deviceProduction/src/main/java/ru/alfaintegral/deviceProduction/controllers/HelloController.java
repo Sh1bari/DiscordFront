@@ -7,9 +7,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import lombok.*;
 import org.springframework.stereotype.Component;
-import ru.alfaintegral.deviceProduction.models.UserDto;
-import ru.alfaintegral.deviceProduction.models.api.responses.RegisterUserDtoRes;
-import ru.alfaintegral.deviceProduction.models.api.responses.UserDtoRes;
+import ru.alfaintegral.deviceProduction.models.api.requests.Login.UserDtoReq;
+import ru.alfaintegral.deviceProduction.models.api.responses.Login.RegisterUserDtoRes;
 import ru.alfaintegral.deviceProduction.services.ApiService;
 import ru.alfaintegral.deviceProduction.services.SceneService;
 import ru.alfaintegral.deviceProduction.services.TokenService;
@@ -48,7 +47,7 @@ public class HelloController {
         }else {
             apiService.post(
                     "http://localhost:8080/api/auth/login",
-                    UserDto.builder()
+                    UserDtoReq.builder()
                             .mail(mailField.getText())
                             .password(passwordField.getText())
                             .build(),

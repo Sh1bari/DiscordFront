@@ -2,7 +2,7 @@ package ru.alfaintegral.deviceProduction.services;
 
 import lombok.*;
 import org.springframework.stereotype.Service;
-import ru.alfaintegral.deviceProduction.models.api.responses.JwtTokenDtoRes;
+import ru.alfaintegral.deviceProduction.models.api.responses.Login.JwtTokenDtoRes;
 import ru.alfaintegral.deviceProduction.models.entities.Token;
 import ru.alfaintegral.deviceProduction.repositories.TokenRepository;
 

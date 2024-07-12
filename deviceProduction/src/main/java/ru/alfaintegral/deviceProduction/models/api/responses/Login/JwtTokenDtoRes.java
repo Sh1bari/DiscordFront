@@ -1,4 +1,4 @@
-package ru.alfaintegral.deviceProduction.models.api.responses;
+package ru.alfaintegral.deviceProduction.models.api.responses.Login;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
