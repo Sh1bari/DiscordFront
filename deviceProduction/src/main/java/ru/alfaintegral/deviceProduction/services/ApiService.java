@@ -23,6 +23,7 @@ import java.util.function.Consumer;
 @Service
 @RequiredArgsConstructor
 public class ApiService {
+    private final TokenService tokenService;
 
     private final ObjectMapper objectMapper;
     private final Executor executor = Executors.newVirtualThreadPerTaskExecutor();
@@ -33,6 +34,9 @@ public class ApiService {
             try {
                 HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
                 if (response.statusCode() == 200) {
+                    if (responseType == String.class) {
+                        return responseType.cast(response.body());
+                    }
                     return objectMapper.readValue(response.body(), responseType);
                 } else {
                     AppError err = objectMapper.readValue(response.body(), AppError.class);
@@ -54,20 +58,24 @@ public class ApiService {
     }
 
     public <T> void get(String url, Class<T> responseType, Consumer<T> onSuccess, Consumer<Exception> onError) {
-        HttpRequest request = HttpRequest.newBuilder()
+        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                 .uri(URI.create(url))
-                .GET()
-                .build();
-        executeRequest(request, responseType, onSuccess, onError);
+                .GET();
+        if(tokenService.getToken().getAccessToken()!=null){
+            requestBuilder.header("Authorization", "Bearer " + tokenService.getToken().getAccessToken());
+        }
+        executeRequest(requestBuilder.build(), responseType, onSuccess, onError);
     }
 
     private  <T> void post(String url, String jsonBody, Class<T> responseType, Consumer<T> onSuccess, Consumer<Exception> onError) {
-        HttpRequest request = HttpRequest.newBuilder()
+        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
-                .build();
-        executeRequest(request, responseType, onSuccess, onError);
+                .POST(HttpRequest.BodyPublishers.ofString(jsonBody));
+        if(tokenService.getToken().getAccessToken()!=null){
+            requestBuilder.header("Authorization", "Bearer " + tokenService.getToken().getAccessToken());
+        }
+        executeRequest(requestBuilder.build(), responseType, onSuccess, onError);
     }
 
     public <T, B> void post(String url, B body, Class<T> responseType, Consumer<T> onSuccess, Consumer<Exception> onError) {

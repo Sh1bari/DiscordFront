@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.alfaintegral.deviceProduction.controllers.MainSceneController">
+    <children>
+        <BorderPane prefHeight="448.0" prefWidth="624.0">
+            <!-- Top Section -->
+            <top>
+                <HBox alignment="CENTER_RIGHT" spacing="10.0" BorderPane.alignment="CENTER_RIGHT">
+                    <children>
+                        <ImageView fx:id="avatarImageView" fitHeight="40.0" fitWidth="40.0" />
+                        <Label fx:id="usernameLabel" text="Username" />
+                    </children>
+                    <padding>
+                        <Insets top="10" right="10" bottom="10" left="10"/>
+                    </padding>
+                </HBox>
+            </top>
+            <!-- Left Section -->
+            <left>
+                <VBox fx:id="sidePanel" prefWidth="200.0" spacing="10.0">
+                    <children>
+                        <Button text="Section 1" />
+                        <Button text="Section 2" />
+                        <Button text="Section 3" />
+                        <Button text="Section 4" />
+                    </children>
+                    <padding>
+                        <Insets top="10" right="10" bottom="10" left="10"/>
+                    </padding>
+                </VBox>
+            </left>
+            <!-- Center Section -->
+            <center>
+                <Text text="Main content goes here" />
+            </center>
+        </BorderPane>
+    </children>
+</AnchorPane>

@@ -4,12 +4,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import lombok.*;
 import org.springframework.stereotype.Component;
 import ru.alfaintegral.deviceProduction.models.UserDto;
 import ru.alfaintegral.deviceProduction.models.api.responses.RegisterUserDtoRes;
 import ru.alfaintegral.deviceProduction.models.api.responses.UserDtoRes;
 import ru.alfaintegral.deviceProduction.services.ApiService;
+import ru.alfaintegral.deviceProduction.services.SceneService;
 import ru.alfaintegral.deviceProduction.services.TokenService;
 
 @Component
@@ -17,6 +19,7 @@ import ru.alfaintegral.deviceProduction.services.TokenService;
 public class HelloController {
     private final ApiService apiService;
     private final TokenService tokenService;
+    private final SceneService sceneService;
 
     @FXML
     private TextField mailField;
@@ -53,6 +56,7 @@ public class HelloController {
                     response -> {
                         tokenService.saveToken(response.getJwtTokens());
                         errorMessage.setText(tokenService.getToken().toString());
+                        sceneService.switchScene((Stage)loginButton.getScene().getWindow(), "/MainScene.fxml", "MainScene");
                     },
                     e -> {
                         errorMessage.setText(e.getMessage());

@@ -32,7 +32,7 @@ public class JavaFxApplication extends Application {
     public void start(Stage primaryStage) throws IOException {
         fxmlLoader.setLocation(getClass().getResource("/hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        primaryStage.setTitle("Hello JavaFX and Spring!");
+        primaryStage.setTitle("Device production");
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();
         primaryStage.show();
