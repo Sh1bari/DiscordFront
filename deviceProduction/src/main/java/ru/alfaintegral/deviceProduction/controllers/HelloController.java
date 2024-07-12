@@ -7,13 +7,16 @@ import javafx.scene.control.TextField;
 import lombok.*;
 import org.springframework.stereotype.Component;
 import ru.alfaintegral.deviceProduction.models.UserDto;
+import ru.alfaintegral.deviceProduction.models.api.responses.RegisterUserDtoRes;
 import ru.alfaintegral.deviceProduction.models.api.responses.UserDtoRes;
 import ru.alfaintegral.deviceProduction.services.ApiService;
+import ru.alfaintegral.deviceProduction.services.TokenService;
 
 @Component
 @RequiredArgsConstructor
 public class HelloController {
     private final ApiService apiService;
+    private final TokenService tokenService;
 
     @FXML
     private TextField mailField;
@@ -30,6 +33,7 @@ public class HelloController {
     @FXML
     private void initialize() {
         loginButton.setOnAction(event -> handleLogin());
+        errorMessage.setText(tokenService.getToken().toString());
     }
 
     private void handleLogin() {
@@ -45,13 +49,12 @@ public class HelloController {
                             .mail(mailField.getText())
                             .password(passwordField.getText())
                             .build(),
-                    UserDtoRes.class,
+                    RegisterUserDtoRes.class,
                     response -> {
-                        errorMessage.setText(response.toString());
-                        System.out.println(response);
+                        tokenService.saveToken(response.getJwtTokens());
+                        errorMessage.setText(tokenService.getToken().toString());
                     },
                     e -> {
-                        System.out.println(e.getMessage());
                         errorMessage.setText(e.getMessage());
                         e.printStackTrace();
                     }
