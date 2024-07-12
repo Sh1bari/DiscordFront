@@ -61,7 +61,7 @@ public class ApiService {
         executeRequest(request, responseType, onSuccess, onError);
     }
 
-    public <T> void post(String url, String jsonBody, Class<T> responseType, Consumer<T> onSuccess, Consumer<Exception> onError) {
+    private  <T> void post(String url, String jsonBody, Class<T> responseType, Consumer<T> onSuccess, Consumer<Exception> onError) {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .header("Content-Type", "application/json")
