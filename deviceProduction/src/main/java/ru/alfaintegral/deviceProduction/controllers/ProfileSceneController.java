@@ -46,15 +46,18 @@ public class ProfileSceneController {
                     surnameLabel.setText(res1.getSurname());
                     middleNameLabel.setText(res1.getMiddleName());
                     mailLabel.setText(res1.getMail());
-                    mailLabel.setText(res1.getMail());
-                    apiService.get(
-                            "http://localhost:8081/api/main/user/avatar/" + res1.getAvatarId(),
-                            String.class,
-                            res2 -> {
-                                avatarImageView.setImage(new Image(res2));
-                            },
-                            Throwable::printStackTrace
-                    );
+                    if(res1.getAvatarId()!=null){
+                        apiService.get(
+                                "http://localhost:8081/api/main/user/avatar/" + res1.getAvatarId(),
+                                String.class,
+                                res2 -> {
+                                    avatarImageView.setImage(new Image(res2));
+                                },
+                                Throwable::printStackTrace
+                        );
+                    }else {
+                        //TODO вставить дефолтную аватарку
+                    }
                 },
                 Throwable::printStackTrace
         );

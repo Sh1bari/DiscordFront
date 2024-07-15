@@ -45,14 +45,18 @@ public class MainSceneController {
                 UserDtoReq.class,
                 res1 -> {
                     usernameLabel.setText(res1.getUsername());
-                    apiService.get(
-                            "http://localhost:8081/api/main/user/avatar/" + res1.getAvatarId(),
-                            String.class,
-                            res2 -> {
-                                avatarImageView.setImage(new Image(res2));
-                            },
-                            Throwable::printStackTrace
-                    );
+                    if(res1.getAvatarId()!=null){
+                        apiService.get(
+                                "http://localhost:8081/api/main/user/avatar/" + res1.getAvatarId(),
+                                String.class,
+                                res2 -> {
+                                    avatarImageView.setImage(new Image(res2));
+                                },
+                                Throwable::printStackTrace
+                        );
+                    }else {
+                        //TODO вставить дефолтную аватарку
+                    }
                 },
                 Throwable::printStackTrace
         );
