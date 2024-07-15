@@ -15,7 +15,7 @@ import ru.alfaintegral.deviceProduction.services.TokenService;
 
 @Component
 @RequiredArgsConstructor
-public class HelloController {
+public class  HelloController {
     private final ApiService apiService;
     private final TokenService tokenService;
     private final SceneService sceneService;

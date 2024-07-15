@@ -13,7 +13,7 @@ import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
-public class SceneService {
+public class  SceneService {
     private final ConfigurableApplicationContext springContext;
     public void switchScene(Stage stage, String fxmlFile, String title) {
         try {
