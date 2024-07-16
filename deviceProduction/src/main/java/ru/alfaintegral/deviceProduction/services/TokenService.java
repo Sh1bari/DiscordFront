@@ -29,4 +29,10 @@ public class TokenService {
         t.setRefreshToken(token.getRefresh());
         return tokenRepo.save(t);
     }
+
+    public Token saveToken(Token token) {
+        return tokenRepo.save(token);
+    }
+
+
 }

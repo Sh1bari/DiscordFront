@@ -1,6 +1,7 @@
 package ru.alfaintegral.deviceProduction.controllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
@@ -8,7 +9,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import ru.alfaintegral.deviceProduction.models.api.responses.Login.JwtTokenDtoRes;
 import ru.alfaintegral.deviceProduction.models.api.responses.UserMe.UserDtoReq;
+import ru.alfaintegral.deviceProduction.models.entities.Token;
 import ru.alfaintegral.deviceProduction.services.ApiService;
 import ru.alfaintegral.deviceProduction.services.SceneService;
 import ru.alfaintegral.deviceProduction.services.TokenService;
@@ -30,12 +33,18 @@ public class MainSceneController {
     private ProgressIndicator avatarLoadingIndicator;
 
     @FXML
+    private Button logoutButton;
+
+    @FXML
     private VBox sidePanel;
 
     @FXML
     private void initialize() {
         initProfile();
         sidePanel.setOnMouseClicked(event -> toggleSidePanel());
+        avatarImageView.setOnMouseClicked(event -> onAvatarClicked());
+        usernameLabel.setOnMouseClicked(event -> onUsernameClicked());
+        logoutButton.setOnMouseClicked(event -> onLogoutClicked());
     }
 
     private void initProfile() {
@@ -78,5 +87,13 @@ public class MainSceneController {
     @FXML
     private void onUsernameClicked() {
         sceneService.switchScene(usernameLabel, "/ProfileScene.fxml");
+    }
+
+    @FXML
+    private void onLogoutClicked() {
+        tokenService.getToken().setAccessToken(null);
+        tokenService.getToken().setRefreshToken(null);
+        tokenService.saveToken(tokenService.getToken());
+        sceneService.switchScene(logoutButton, "/hello-view.fxml");
     }
 }
