@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.alfaintegral.deviceProduction.controllers.ProfileSceneController">
+<AnchorPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.alfaintegral.deviceProduction.controllers.ProfileSceneController">
    <stylesheets>
       <URL value="@styles.css" />
    </stylesheets>
@@ -17,8 +17,7 @@
       <!-- Top Bar -->
       <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="800.0" styleClass="top-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ImageView fx:id="profileImageView" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
-            <Label fx:id="usernameLabel" styleClass="username-label" text="Олеся Вячеславовна Шулева" />
+            <Label fx:id="usernameLabel" styleClass="username-label" text="Username" />
          </children>
          <padding>
             <Insets left="10" right="10" />
@@ -29,40 +28,34 @@
       <VBox fx:id="sidePanel" alignment="TOP_CENTER" prefWidth="60.0" styleClass="side-menu" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="50.0">
          <children>
             <Button fx:id="homeButton" prefHeight="39.0" prefWidth="37.0" styleClass="menu-button" text="🏠" />
-            <Button fx:id="clockButton" prefHeight="25.0" prefWidth="19.0" styleClass="menu-button" text="⏰" />
             <!-- Add more buttons as needed -->
          </children>
       </VBox>
 
       <!-- Profile and Details Section -->
-      <HBox spacing="20.0" styleClass="main-content" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
-         <!-- Profile Image and Icon -->
-         <VBox alignment="CENTER" prefWidth="200.0" spacing="10.0">
+      <VBox spacing="20.0" styleClass="main-content" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+         <HBox>
             <children>
-               <ImageView fx:id="largeProfileImageView" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-               <Button fx:id="profileIconButton" styleClass="icon-button" text="🌥️" />
+               <ImageView fx:id="avatarImageView" fitHeight="166.0" fitWidth="166.0" pickOnBounds="true" preserveRatio="true">
+                  <HBox.margin>
+                     <Insets right="10.0" />
+                  </HBox.margin>
+               </ImageView>
+               <!-- Details Section -->
+               <VBox alignment="TOP_LEFT" prefWidth="500.0" spacing="10.0" styleClass="details-section">
+                  <children>
+                     <Label styleClass="label-title" text="Имя" />
+                     <Label fx:id="nameLabel" styleClass="label-content" />
+                     <Label styleClass="label-title" text="Фамилия" />
+                     <Label fx:id="surnameLabel" styleClass="label-content" />
+                     <Label styleClass="label-title" text="Отчество" />
+                     <Label fx:id="middleNameLabel" styleClass="label-content" />
+                     <Label styleClass="label-title" text="Email" />
+                     <Label fx:id="mailLabel" styleClass="label-content" />
+                  </children>
+               </VBox>
             </children>
-         </VBox>
-
-         <!-- Details Section -->
-         <VBox alignment="TOP_LEFT" prefWidth="500.0" spacing="10.0" styleClass="details-section">
-            <children>
-               <Label styleClass="label-title" text="ФИО" />
-               <Label fx:id="fullNameLabel" styleClass="label-content" text="Олеся Вячеславовна Шулева" />
-               <Label styleClass="label-title" text="Должность" />
-               <Label fx:id="positionLabel" styleClass="label-content" text="Адвокат" />
-               <Label styleClass="label-title" text="Город" />
-               <Label fx:id="cityLabel" styleClass="label-content" text="Нижний Новгород" />
-               <Label styleClass="label-title" text="Email" />
-               <Label fx:id="emailLabel" styleClass="label-content" text="olesya@smartyco.com" />
-               <Label styleClass="label-title" text="Страна" />
-               <Label fx:id="countryLabel" styleClass="label-content" text="Россия" />
-               <Label styleClass="label-title" text="Адрес сайта" />
-               <Label fx:id="websiteLabel" styleClass="label-content" text="www.example.com" />
-               <Label styleClass="label-title" text="Заметки" />
-               <Label fx:id="notesLabel" styleClass="label-content" text="Заметки..." />
-            </children>
-         </VBox>
-      </HBox>
+         </HBox>
+      </VBox>
    </children>
 </AnchorPane>
