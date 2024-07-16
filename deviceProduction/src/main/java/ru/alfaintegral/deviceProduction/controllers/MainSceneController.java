@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.alfaintegral.deviceProduction.models.api.responses.Login.JwtTokenDtoRes;
 import ru.alfaintegral.deviceProduction.models.api.responses.UserMe.UserDtoReq;
-import ru.alfaintegral.deviceProduction.models.entities.Token;
 import ru.alfaintegral.deviceProduction.services.ApiService;
 import ru.alfaintegral.deviceProduction.services.SceneService;
 import ru.alfaintegral.deviceProduction.services.TokenService;
@@ -54,7 +53,7 @@ public class MainSceneController {
                 UserDtoReq.class,
                 res1 -> {
                     usernameLabel.setText(res1.getUsername());
-                    if(res1.getAvatarId()!=null){
+                    if (res1.getAvatarId() != null) {
                         apiService.get(
                                 "http://localhost:8081/api/main/user/avatar/" + res1.getAvatarId(),
                                 String.class,
@@ -63,7 +62,7 @@ public class MainSceneController {
                                 },
                                 Throwable::printStackTrace
                         );
-                    }else {
+                    } else {
                         //TODO вставить дефолтную аватарку
                     }
                 },
@@ -91,9 +90,8 @@ public class MainSceneController {
 
     @FXML
     private void onLogoutClicked() {
-        tokenService.getToken().setAccessToken(null);
-        tokenService.getToken().setRefreshToken(null);
-        tokenService.saveToken(tokenService.getToken());
+        tokenService.saveToken(new JwtTokenDtoRes(null, null));
+
         sceneService.switchScene(logoutButton, "/hello-view.fxml");
     }
 }

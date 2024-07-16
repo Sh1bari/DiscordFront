@@ -6,6 +6,7 @@ import lombok.*;
 import org.springframework.stereotype.Service;
 import ru.alfaintegral.deviceProduction.exceptions.AppError;
 import ru.alfaintegral.deviceProduction.exceptions.GeneralException;
+import ru.alfaintegral.deviceProduction.models.api.responses.Login.JwtTokenDtoRes;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -38,6 +39,13 @@ public class ApiService {
                         return responseType.cast(response.body());
                     }
                     return objectMapper.readValue(response.body(), responseType);
+                } else if (response.statusCode() == 401 || response.statusCode() == 403) {
+                    get("http://localhost:8080/api/auth/refresh", JwtTokenDtoRes.class, res -> {
+                        tokenService.saveToken(new JwtTokenDtoRes());
+                        sendRequest(request, responseType);
+                    }, e -> {
+                        throw new GeneralException(401, "Unauthorized");
+                    });
                 } else {
                     AppError err = objectMapper.readValue(response.body(), AppError.class);
                     throw new GeneralException(err.getStatus(), err.getMessage());
@@ -45,6 +53,7 @@ public class ApiService {
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
+            return null;
         }, executor);
     }
 
