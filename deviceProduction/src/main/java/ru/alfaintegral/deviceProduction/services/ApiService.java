@@ -40,7 +40,7 @@ public class ApiService {
                     }
                     return objectMapper.readValue(response.body(), responseType);
                 } else if (response.statusCode() == 401 || response.statusCode() == 403) {
-                    get("http://localhost:8080/api/auth/refresh", JwtTokenDtoRes.class, res -> {
+                    post("http://localhost:8080/api/auth/refresh",tokenService.getToken().getRefreshToken(), JwtTokenDtoRes.class, res -> {
                         tokenService.saveToken(new JwtTokenDtoRes());
                         sendRequest(request, responseType);
                     }, e -> {
