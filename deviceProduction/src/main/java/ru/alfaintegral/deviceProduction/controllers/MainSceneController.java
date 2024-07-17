@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.AnchorPane;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.alfaintegral.deviceProduction.models.api.responses.Login.JwtTokenDtoRes;
@@ -24,25 +24,50 @@ public class MainSceneController {
 
     @FXML
     private ImageView avatarImageView;
-
     @FXML
-    private Label usernameLabel;
+    private ImageView profileAvatarImageView;
 
     @FXML
     private ProgressIndicator avatarLoadingIndicator;
+    @FXML
+    private ProgressIndicator avatarProfileLoadingIndicator;
 
     @FXML
     private Button logoutButton;
 
     @FXML
-    private VBox sidePanel;
+    private Label mailLabel;
+
+    @FXML
+    private AnchorPane mainPageAnchorPane;
+
+    @FXML
+    private Label middleNameLabel;
+
+    @FXML
+    private Label nameLabel;
+
+    @FXML
+    private AnchorPane profileAnchorPane;
+
+    @FXML
+    private AnchorPane sideBarAnchorPane;
+
+    @FXML
+    private AnchorPane mainButton;
+
+    @FXML
+    private AnchorPane headerAnchorPane;
+
+    @FXML
+    private Label surnameLabel;
+
+    @FXML
+    private Label usernameLabel;
 
     @FXML
     private void initialize() {
         initProfile();
-        sidePanel.setOnMouseClicked(event -> toggleSidePanel());
-        avatarImageView.setOnMouseClicked(event -> onAvatarClicked());
-        usernameLabel.setOnMouseClicked(event -> onUsernameClicked());
         logoutButton.setOnMouseClicked(event -> onLogoutClicked());
     }
 
@@ -59,6 +84,7 @@ public class MainSceneController {
                                 String.class,
                                 res2 -> {
                                     avatarImageView.setImage(new Image(res2));
+                                    avatarLoadingIndicator.setVisible(false);
                                 },
                                 Throwable::printStackTrace
                         );
@@ -70,28 +96,66 @@ public class MainSceneController {
         );
     }
 
-    private void toggleSidePanel() {
-        if (sidePanel.getPrefWidth() == 200.0) {
-            sidePanel.setPrefWidth(50.0);
-        } else {
-            sidePanel.setPrefWidth(200.0);
-        }
+    @FXML
+    private void handleMainButtonClick() {
+        openMainPageAnchorPane();
     }
 
     @FXML
-    private void onAvatarClicked() {
-        sceneService.switchScene(avatarImageView, "/ProfileScene.fxml");
+    private void handleProfileButtonClick() {
+        openProfilePage();
     }
 
-    @FXML
-    private void onUsernameClicked() {
-        sceneService.switchScene(usernameLabel, "/ProfileScene.fxml");
+    private void openProfilePage(){
+        openProfileAnchorPane();
+        avatarProfileLoadingIndicator.setVisible(true);
+        profileAvatarImageView.setImage(null);
+        apiService.get(
+                "http://localhost:8081/api/main/user/me",
+                UserDtoReq.class,
+                res1 -> {
+                    usernameLabel.setText(res1.getUsername());
+                    nameLabel.setText(res1.getName());
+                    surnameLabel.setText(res1.getSurname());
+                    middleNameLabel.setText(res1.getMiddleName());
+                    mailLabel.setText(res1.getMail());
+                    if (res1.getAvatarId() != null) {
+                        apiService.get(
+                                "http://localhost:8081/api/main/user/avatar/" + res1.getAvatarId(),
+                                String.class,
+                                res2 -> {
+                                    profileAvatarImageView.setImage(new Image(res2));
+                                    avatarProfileLoadingIndicator.setVisible(false);
+                                },
+                                Throwable::printStackTrace
+                        );
+                    } else {
+                        //TODO вставить дефолтную аватарку
+                    }
+                },
+                Throwable::printStackTrace
+        );
     }
 
     @FXML
     private void onLogoutClicked() {
         tokenService.saveToken(new JwtTokenDtoRes(null, null));
 
-        sceneService.switchScene(logoutButton, "/hello-view.fxml");
+        sceneService.switchScene(logoutButton, "/AuthorizationScene.fxml");
+    }
+
+    private void openMainPageAnchorPane(){
+        hideAnchorPanes();
+        mainPageAnchorPane.setVisible(true);
+    }
+
+    private void openProfileAnchorPane(){
+        hideAnchorPanes();
+        profileAnchorPane.setVisible(true);
+    }
+
+    private void hideAnchorPanes(){
+        mainPageAnchorPane.setVisible(false);
+        profileAnchorPane.setVisible(false);
     }
 }

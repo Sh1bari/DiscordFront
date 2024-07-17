@@ -1,69 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ProgressIndicator?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="393.0" prefWidth="658.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.alfaintegral.deviceProduction.controllers.MainSceneController">
+<AnchorPane prefHeight="393.0" prefWidth="658.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.alfaintegral.deviceProduction.controllers.MainSceneController">
+    <stylesheets>
+        <URL value="@styles.css" />
+    </stylesheets>
     <children>
-          <Text layoutX="166.0" layoutY="189.0" text="Main content goes here" wrappingWidth="372.53076171875" />
-          <HBox alignment="CENTER_RIGHT" prefHeight="41.0" prefWidth="658.0" style="-fx-background-color: #a3d4ff;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-              <children>
-                  <StackPane prefHeight="40.0" prefWidth="46.0">
-                      <children>
-                          <ProgressIndicator fx:id="avatarLoadingIndicator" visible="false" />
-                          <ImageView fx:id="avatarImageView" accessibleRole="PARENT" fitHeight="40.0" fitWidth="44.0" />
-                      </children>
+      <AnchorPane fx:id="profileAnchorPane" layoutX="113.0" layoutY="41.0" prefHeight="397.0" prefWidth="587.0" style="-fx-background-color: #dcdcdc;" visible="false">
+         <AnchorPane layoutX="21.0" layoutY="15.0" prefHeight="297.0" prefWidth="547.0">
+            <children>
+                   <VBox alignment="TOP_LEFT" layoutX="274.0" layoutY="4.0" prefHeight="290.0" prefWidth="244.0" spacing="10.0" styleClass="details-section">
+                       <children>
+                           <Label styleClass="label-title" text="Имя" />
+                           <Label fx:id="nameLabel" styleClass="label-content" />
+                           <Label styleClass="label-title" text="Фамилия" />
+                           <Label fx:id="surnameLabel" styleClass="label-content" />
+                           <Label styleClass="label-title" text="Отчество" />
+                           <Label fx:id="middleNameLabel" styleClass="label-content" />
+                           <Label styleClass="label-title" text="Email" />
+                           <Label fx:id="mailLabel" styleClass="label-content" />
+                       </children>
+                   </VBox>
+                   <!-- Details Section -->
+                   <StackPane layoutX="41.0" layoutY="14.0" prefHeight="175.0" prefWidth="166.0">
+                       <children>
+                           <ProgressIndicator fx:id="avatarProfileLoadingIndicator" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="166.0" prefWidth="166.0" visible="false" />
+                           <ImageView fx:id="profileAvatarImageView" fitHeight="166.0" fitWidth="166.0" pickOnBounds="true" preserveRatio="true" />
+                       </children>
+                   </StackPane>
+            </children></AnchorPane>
+      </AnchorPane>
+      <AnchorPane fx:id="mainPageAnchorPane" layoutX="113.0" layoutY="41.0" prefHeight="397.0" prefWidth="587.0" />
+      <AnchorPane fx:id="sideBarAnchorPane" layoutY="41.0" prefHeight="356.0" prefWidth="114.0">
+         <children>
+                  <Separator layoutX="109.0" orientation="VERTICAL" prefHeight="397.0" prefWidth="5.0" />
+                    <Button fx:id="logoutButton" accessibleRole="PARENT" layoutX="31.0" layoutY="358.0" style="-fx-background-color: #ff0000; -fx-text-fill: white;" text="Logout">
                <opaqueInsets>
-                  <Insets />
+                  <Insets bottom="10.0" />
                </opaqueInsets>
-                  </StackPane>
-                  <Label fx:id="usernameLabel" accessibleRole="PARENT" text="Username">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-            </Label>
-              </children>
-          </HBox>
-          <HBox layoutY="41.0" prefHeight="379.0" prefWidth="118.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="41.0">
-              <children>
-                  <VBox fx:id="sidePanel" prefHeight="379.0" prefWidth="112.0" spacing="10.0">
-                      <children>
-                          <Button text="Section 1" />
-                          <Button text="Section 2" />
-                          <Button text="Section 3" />
-                          <Button text="Section 4" />
-                          <Region VBox.vgrow="ALWAYS" />
-                          <Button fx:id="logoutButton" accessibleRole="PARENT" text="Logout">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+             <AnchorPane fx:id="mainButton" layoutX="-5.0" onMouseClicked="#handleMainButtonClick" prefHeight="57.0" prefWidth="115.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-width: 1px;">
+                 <cursor>
+                     <Cursor fx:constant="HAND" />
+                 </cursor>
+                 <children>
+                     <Label style="-fx-alignment: center;" text="Main" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                 </children>
+             </AnchorPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="headerAnchorPane" onMouseClicked="#handleProfileButtonClick" prefHeight="41.0" prefWidth="658.0" style="-fx-background-color: #a3d4ff;">
+         <children>
+            <AnchorPane layoutX="500.0" prefHeight="42.0" prefWidth="199.0">
+               <children>
+                        <Label fx:id="usernameLabel" accessibleRole="PARENT" layoutX="100.0" layoutY="9.0" prefHeight="25.0" prefWidth="65.0" text="Username">
                      <opaqueInsets>
-                        <Insets bottom="10.0" />
+                        <Insets />
                      </opaqueInsets>
-                  </Button>
-                      </children>
-                      <padding>
-                          <Insets bottom="10" left="10" right="10" top="10" />
-                      </padding>
-               <HBox.margin>
-                  <Insets top="50.0" />
-               </HBox.margin>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-                  </VBox>
-                  <Separator orientation="VERTICAL" prefHeight="200.0" />
-              </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-          </HBox>
+                  </Label>
+                        <StackPane layoutX="28.0" layoutY="1.0" prefHeight="40.0" prefWidth="46.0">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <children>
+                                <ProgressIndicator fx:id="avatarLoadingIndicator" visible="false" />
+                                <ImageView fx:id="avatarImageView" accessibleRole="PARENT" fitHeight="40.0" fitWidth="44.0" />
+                     </children>
+                        </StackPane>
+               </children>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></AnchorPane>
+         </children></AnchorPane>
     </children>
 </AnchorPane>
