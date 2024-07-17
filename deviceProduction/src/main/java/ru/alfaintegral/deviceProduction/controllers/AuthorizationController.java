@@ -16,7 +16,7 @@ import ru.alfaintegral.deviceProduction.services.TokenService;
 
 @Component
 @RequiredArgsConstructor
-public class HelloController {
+public class AuthorizationController {
     private final ApiService apiService;
     private final TokenService tokenService;
     private final SceneService sceneService;
@@ -43,7 +43,6 @@ private void initialize() {
         });
     }
         loginButton.setOnAction(event -> handleLogin());
-        errorMessage.setText(tokenService.getToken().toString());
     }
 
     private void handleLogin() {

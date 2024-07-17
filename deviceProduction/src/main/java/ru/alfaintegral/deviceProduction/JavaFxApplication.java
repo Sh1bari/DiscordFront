@@ -30,7 +30,7 @@ public class JavaFxApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        fxmlLoader.setLocation(getClass().getResource("/hello-view.fxml"));
+        fxmlLoader.setLocation(getClass().getResource("/AuthorizationScene.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         primaryStage.setTitle("Device production");
         primaryStage.setScene(scene);
