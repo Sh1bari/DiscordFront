@@ -39,21 +39,22 @@ public class ApiService {
                         return responseType.cast(response.body());
                     }
                     return objectMapper.readValue(response.body(), responseType);
-                } else if (response.statusCode() == 401 || response.statusCode() == 403) {
+                } /*else if (response.statusCode() == 401 || response.statusCode() == 403) {
                     get("http://localhost:8080/api/auth/refresh", JwtTokenDtoRes.class, res -> {
                         tokenService.saveToken(new JwtTokenDtoRes());
                         sendRequest(request, responseType);
                     }, e -> {
                         throw new GeneralException(401, "Unauthorized");
                     });
-                } else {
+                }*/
+                //TODO не рабочее
+                else {
                     AppError err = objectMapper.readValue(response.body(), AppError.class);
                     throw new GeneralException(err.getStatus(), err.getMessage());
                 }
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            return null;
         }, executor);
     }
 
