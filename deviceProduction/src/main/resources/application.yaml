@@ -1,11 +1,16 @@
+---
+spring:
+  config:
+    activate:
+      on-profile: client1
 server:
   port: 8991
-spring:
-  datasource:
-    url: jdbc:sqlite:deviceProduction.db
-    driver-class-name: org.sqlite.JDBC
-  jpa:
-    database-platform: org.hibernate.community.dialect.SQLiteDialect
-    hibernate:
-      ddl-auto: update
 
+# Конфигурация для клиента 2 (профиль client2)
+---
+spring:
+  config:
+    activate:
+      on-profile: client2
+server:
+  port: 8992

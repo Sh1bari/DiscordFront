@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="515.0" prefWidth="608.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.alfaintegral.deviceProduction.controllers.AuthorizationController">
+<?import java.net.URL?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.controllers.MainController" styleClass="discord-background">
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
     <children>
-        <VBox alignment="CENTER" spacing="10.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="100.0">
-            <padding>
-                <Insets bottom="20" left="20" right="20" top="20" />
-            </padding>
-            <children>
-                <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Login Form" />
-                <TextField fx:id="mailField" promptText="Mail" />
-                <PasswordField fx:id="passwordField" promptText="Password" />
-                <Button fx:id="loginButton" style="-fx-background-color: #0078D7; -fx-text-fill: white;" text="Login">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></Button>
-                <Label fx:id="errorMessage" textFill="RED" />
-            </children>
+        <!-- Боковая панель с кнопками комнат -->
+        <VBox layoutX="20" layoutY="20" spacing="10" prefWidth="150" styleClass="sidebar">
+            <Button fx:id="mainRoomButton" text="Основная" onAction="#handleConnectToMainRoom" styleClass="room-button"/>
+            <Button fx:id="junkRoomButton" text="Шлак" onAction="#handleConnectToJunkRoom" styleClass="room-button"/>
+            <Button fx:id="betterRoomButton" text="Стану лучше" onAction="#handleConnectToBetterRoom" styleClass="room-button"/>
         </VBox>
+
+        <!-- Поле для отображения статуса подключения -->
+        <Button fx:id="connectButton" layoutX="200" layoutY="20" text="Подключиться" onAction="#handleConnect" />
+
+        <!-- Поле для отображения информации о текущей комнате -->
+        <Button fx:id="currentRoomLabel" layoutX="200" layoutY="70" text="Вы не подключены к комнате" />
     </children>
 </AnchorPane>
