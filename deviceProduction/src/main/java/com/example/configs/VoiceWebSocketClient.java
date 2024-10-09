@@ -6,8 +6,13 @@ import org.java_websocket.handshake.ServerHandshake;
 import org.springframework.stereotype.Service;
 
 import javax.sound.sampled.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.nio.ByteBuffer;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 public class VoiceWebSocketClient extends WebSocketClient {
 
@@ -50,44 +55,58 @@ public class VoiceWebSocketClient extends WebSocketClient {
             try {
                 AudioFormat format = getAudioFormat();
                 DataLine.Info micInfo = new DataLine.Info(TargetDataLine.class, format);
-                DataLine.Info speakerInfo = new DataLine.Info(SourceDataLine.class, format);
 
                 // Открытие микрофона
                 microphone = (TargetDataLine) AudioSystem.getLine(micInfo);
                 microphone.open(format);
                 microphone.start();
 
-                // Открытие динамиков
-                speakers = (SourceDataLine) AudioSystem.getLine(speakerInfo);
-                speakers.open(format);
-                speakers.start();
-
-                System.out.println("Микрофон и динамики успешно открыты.");
-
                 byte[] buffer = new byte[4096];
                 while (isOpen()) {
                     int bytesRead = microphone.read(buffer, 0, buffer.length);
                     if (bytesRead > 0) {
-                        // Воспроизведение записанного аудио через динамики
-                        speakers.write(buffer, 0, bytesRead);
+                        // Сжатие данных перед отправкой через WebSocket
+                        byte[] compressedData = compress(buffer, 0, bytesRead);
 
-                        // Отправка данных через WebSocket
-                        send(ByteBuffer.wrap(buffer, 0, bytesRead));
-                        System.out.println("Отправлено и воспроизведено: " + bytesRead + " байт.");
+                        // Воспроизведение записанного аудио через динамики
+                        //speakers.write(buffer, 0, bytesRead);
+
+                        // Отправка сжатых данных
+                        send(ByteBuffer.wrap(compressedData));
+                        System.out.println("Отправлено сжатых данных: " + compressedData.length + " байт.");
                     }
                 }
 
-                // Закрытие ресурсов после завершения
                 microphone.close();
-                speakers.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }).start();
     }
+    private byte[] compress(byte[] data, int offset, int length) throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try (GZIPOutputStream gzipOutputStream = new GZIPOutputStream(byteArrayOutputStream)) {
+            gzipOutputStream.write(data, offset, length);
+        }
+        return byteArrayOutputStream.toByteArray();
+    }
+    private byte[] decompress(byte[] compressedData) throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try (GZIPInputStream gzipInputStream = new GZIPInputStream(new ByteArrayInputStream(compressedData))) {
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = gzipInputStream.read(buffer)) > 0) {
+                byteArrayOutputStream.write(buffer, 0, bytesRead);
+            }
+        }
+        return byteArrayOutputStream.toByteArray();
+    }
 
-    private void playAudio(byte[] data) {
+    private void playAudio(byte[] compressedData) {
         try {
+            // Разжимаем сжатые данные
+            byte[] decompressedData = decompress(compressedData);
+
             AudioFormat format = getAudioFormat();
             DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
 
@@ -97,7 +116,7 @@ public class VoiceWebSocketClient extends WebSocketClient {
                 speakers.start();
             }
 
-            speakers.write(data, 0, data.length);
+            speakers.write(decompressedData, 0, decompressedData.length);
         } catch (Exception e) {
             e.printStackTrace();
         }
