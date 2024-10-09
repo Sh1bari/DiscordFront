@@ -69,7 +69,7 @@ public class VoiceWebSocketClient extends WebSocketClient {
                     int bytesRead = microphone.read(buffer, 0, buffer.length);
                     if (bytesRead > 0) {
                         // Воспроизведение записанного аудио через динамики
-                        //speakers.write(buffer, 0, bytesRead);
+                        speakers.write(buffer, 0, bytesRead);
 
                         // Отправка данных через WebSocket
                         send(ByteBuffer.wrap(buffer, 0, bytesRead));
@@ -115,9 +115,9 @@ public class VoiceWebSocketClient extends WebSocketClient {
     }
 
     private AudioFormat getAudioFormat() {
-        float sampleRate = 16000.0F;
+        float sampleRate = 32000.0F;
         int sampleSizeInBits = 16;
-        int channels = 1; // Моно
+        int channels = 2; // Моно
         boolean signed = true;
         boolean bigEndian = false;
         return new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
